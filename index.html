@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal — an MCP-connected chatbot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="rack">
+
+    <!-- Signature element: a live signal-path diagram showing the request hopping across the three nodes -->
+    <header class="path" aria-label="request path">
+      <div class="node" id="node-you">
+        <span class="node-dot"></span>
+        <span class="node-label">You</span>
+      </div>
+      <div class="wire" id="wire-1"><span class="pulse"></span></div>
+      <div class="node" id="node-llm">
+        <span class="node-dot"></span>
+        <span class="node-label">LLM brain</span>
+      </div>
+      <div class="wire" id="wire-2"><span class="pulse"></span></div>
+      <div class="node" id="node-mcp">
+        <span class="node-dot"></span>
+        <span class="node-label">MCP server</span>
+      </div>
+    </header>
+
+    <main class="board">
+
+      <!-- Settings / wiring panel -->
+      <section class="panel config" id="config-panel">
+        <h1>Signal</h1>
+        <p class="tagline">A small chatbot with a real LLM brain, wired to a live MCP tool server.</p>
+
+        <div class="field">
+          <label for="api-key">Anthropic API key</label>
+          <input type="password" id="api-key" placeholder="sk-ant-..." autocomplete="off" spellcheck="false">
+          <p class="hint">Stored only in this tab's memory. Never sent anywhere except <code>api.anthropic.com</code>, and never written to this repo.</p>
+        </div>
+
+        <div class="field">
+          <label for="model">Model</label>
+          <select id="model">
+            <option value="claude-sonnet-5">claude-sonnet-5</option>
+            <option value="claude-haiku-4-5-20251001">claude-haiku-4-5-20251001</option>
+            <option value="claude-opus-4-8">claude-opus-4-8</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="mcp-url">MCP server URL (Streamable HTTP)</label>
+          <input type="text" id="mcp-url" placeholder="https://your-mcp-server.example.com/mcp" spellcheck="false">
+          <p class="hint">Needs CORS enabled on the server. See <code>demo-mcp-server/</code> for a deployable example.</p>
+        </div>
+
+        <button id="connect-btn" class="btn-primary">Wire it up</button>
+        <p class="status" id="connect-status">Not connected.</p>
+
+        <div class="tools-list" id="tools-list" hidden>
+          <h2>Tools available to the LLM</h2>
+          <ul id="tools-ul"></ul>
+        </div>
+      </section>
+
+      <!-- Chat panel -->
+      <section class="panel chat">
+        <div class="messages" id="messages">
+          <div class="msg system">
+            Set your API key and MCP server URL on the left, hit <strong>Wire it up</strong>, then say hello.
+          </div>
+        </div>
+
+        <form id="chat-form" class="composer">
+          <textarea id="chat-input" placeholder="Ask me something a tool could help with…" rows="1" required></textarea>
+          <button type="submit" id="send-btn">Send</button>
+        </form>
+      </section>
+
+    </main>
+
+    <footer class="foot">Built for the NCI individual exercise · chat UI + LLM brain + live MCP connection</footer>
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>
